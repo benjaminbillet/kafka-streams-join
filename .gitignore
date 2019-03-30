@@ -1,0 +1,38 @@
+/bin/
+/deploy/
+*.hprof
+
+# rocksdb
+rocksdb/
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.metadata
+tmp/
+tmp/**/*
+*.tmp
+local.properties
+.classpath
+.settings/
+
+# Intellij
+.idea/
+classes/
+out/
+
+# Gradle
+.gradle/
+/build/
+
+# Gradle wrapper
+!gradle/wrapper/gradle-wrapper.jar
+
+# MacOS X
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
