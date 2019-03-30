@@ -25,14 +25,11 @@ public class JsonDeserializer<T> implements Deserializer<T> {
       return null;
     }
 
-    T data;
     try {
-      data = objectMapper.readValue(bytes, clazz);
+      return objectMapper.readValue(bytes, clazz);
     } catch (Exception e) {
       throw new SerializationException(e);
     }
-
-    return data;
   }
 
   @Override

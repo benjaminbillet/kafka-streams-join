@@ -58,7 +58,8 @@ public class HashJoinProcessor<K, V> implements Processor<K, V> {
 
     Gauge.builder("store-size", this.store, store -> store.approximateNumEntries())
       .tag("store-name", storeName)
-      .description("Approximate number of objects into the store").register(Metrics.globalRegistry);
+      .description("Approximate number of objects into the store")
+      .register(Metrics.globalRegistry);
   }
 
   @Override

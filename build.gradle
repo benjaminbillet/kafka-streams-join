@@ -28,6 +28,7 @@ ext {
   jacksonVersion = '2.9.8'
   commonsIoVersion = '2.6'
   javaxValidationVersion = '2.0.1.Final'
+  hiveVersion = '2.7.0'
 }
 
 dependencies {
@@ -36,6 +37,10 @@ dependencies {
   implementation "javax.validation:validation-api:${javaxValidationVersion}"
 
   implementation "commons-io:commons-io:${commonsIoVersion}"
+
+  // we use only for their murmur3 hash implementation
+  implementation "org.apache.hive:hive-storage-api:${hiveVersion}"
+
 
   // jackson
   implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"

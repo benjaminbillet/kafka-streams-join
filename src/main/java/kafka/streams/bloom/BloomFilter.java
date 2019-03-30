@@ -20,6 +20,8 @@ public class BloomFilter<T> {
   private final int nbHashFunctions;
   private final BitSet bitset;
 
+  private int count;
+
   public BloomFilter(@NotNull Function<T, Long> hashFunction, long expectedCount) {
     this(hashFunction, expectedCount, 0.05);
   }
@@ -54,6 +56,10 @@ public class BloomFilter<T> {
    * @param nbHashFunctions
    */
   public BloomFilter(@NotNull Function<T, Long> hashFunction, int nbBits, int nbHashFunctions) {
+    this(hashFunction, new BitSet(packTo64bitsWord(nbBits)), packTo64bitsWord(nbBits), nbHashFunctions, 0);
+  }
+
+  BloomFilter(@NotNull Function<T, Long> hashFunction, BitSet bitset, int nbBits, int nbHashFunctions, int count) {
     Objects.requireNonNull(hashFunction);
     if (nbBits <= 0) {
       throw new IllegalArgumentException("nbBits should be strictly positive");
@@ -62,9 +68,10 @@ public class BloomFilter<T> {
       throw new IllegalArgumentException("nbHashFunctions should be strictly positive");
     }
 
-    this.nbBits = packTo64bitsWord(nbBits);
+    this.count = count;
+    this.nbBits = nbBits;
     this.nbHashFunctions = nbHashFunctions;
-    this.bitset = new BitSet(nbBits);
+    this.bitset = bitset;
     this.hashFunction = hashFunction;
   }
 
@@ -75,6 +82,7 @@ public class BloomFilter<T> {
   public void add(@NotNull T item) {
     Objects.requireNonNull(item);
     addHash(this.hashFunction.apply(item));
+    count++;
   }
 
   private void addHash(long hash) {
@@ -118,6 +126,10 @@ public class BloomFilter<T> {
     return true;
   }
 
+  public int getNbBits() {
+    return nbBits;
+  }
+
   public int getNbHashFunctions() {
     return nbHashFunctions;
   }
@@ -126,14 +138,23 @@ public class BloomFilter<T> {
     return bitset.toLongArray();
   }
 
+  public byte[] getBitsetBytes() {
+    return bitset.toByteArray();
+  }
+
+  public int getCount() {
+    return this.count;
+  }
+
   /**
    * Clear the content of the filter.
    */
   public void clear() {
-    this.bitset.clear();
+    bitset.clear();
+    count = 0;
   }
 
-  private int packTo64bitsWord(int value) {
+  private static int packTo64bitsWord(int value) {
     return value + (Long.SIZE - (value % Long.SIZE));
   }
 }
